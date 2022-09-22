@@ -15,11 +15,12 @@ The goal is to fix at least 2 bugs and implement 1 feature than could help us se
 ## Setup api
 
 -Create free mongo database on https://www.mongodb.com/atlas/database and get mongo uri
+
 - cd api
 - Run `npm i`
 - Run `npm run dev`
 - Set project variables in `.env` (create new if not found) and `config.js` file
-- Run cmd/initialData in order to be ready to begin
+- Run cmd/initData in order to be ready to begin
 
 ## Setup app
 
