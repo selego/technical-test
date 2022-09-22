@@ -111,11 +111,23 @@ const Detail = ({ user }) => {
               </div>
               <div className="w-full md:w-[260px] ">
                 <div className="text-[14px] text-[#212325] font-medium	">Cost per day</div>
-                <input className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]" type="number" name="tjm" value={values.tjm} onChange={handleChange} />
+                <input
+                  className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]"
+                  type="number"
+                  name="costPerDay"
+                  value={values.costPerDay}
+                  onChange={handleChange}
+                />
               </div>
               <div className="w-full md:w-[260px] ">
                 <div className="text-[14px] text-[#212325] font-medium	">Sell per day</div>
-                <input className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]" type="number" name="tjms" value={values.tjms} onChange={handleChange} />
+                <input
+                  className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]"
+                  type="number"
+                  name="sellPerDay"
+                  value={values.sellPerDay}
+                  onChange={handleChange}
+                />
               </div>
             </div>
             <div className="w-full mt-3">

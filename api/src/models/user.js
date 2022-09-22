@@ -18,8 +18,8 @@ const Schema = new mongoose.Schema({
   last_login_at: { type: Date, default: Date.now },
   created_at: { type: Date, default: Date.now },
 
-  tjm: { type: Number },
-  tjms: { type: Number },
+  costPerDay: { type: Number },
+  sellPerDay: { type: Number },
 
   days_worked: { type: Number, default: 23 },
 

@@ -71,7 +71,7 @@ const Activities = ({ date, user, project }) => {
         projectLogo: project.logo,
         date,
         user: user.name,
-        userTjms: user.tjms,
+        userSellPerDay: user.sellPerDay,
         userJobTitle: user.job_title,
         userAvatar: user.avatar,
         total: 0,
@@ -101,8 +101,8 @@ const Activities = ({ date, user, project }) => {
     const n = [...activities];
     n[i].detail[j].value = value;
     n[i].total = n[i].detail.reduce((acc, b) => acc + b.value, 0);
-    n[i].cost = (n[i].total / 8) * user.tjm;
-    n[i].value = (n[i].total / 8) * (user.tjms || 0);
+    n[i].cost = (n[i].total / 8) * user.costPerDay;
+    n[i].value = (n[i].total / 8) * (user.sellPerDay || 0);
     setActivities(n);
   }
 
