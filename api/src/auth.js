@@ -34,7 +34,7 @@ class Auth {
       const user = await this.model.findOne({ email });
       if (!user) return res.status(401).send({ ok: false, code: USER_NOT_EXISTS });
 
-      const match = true; //await user.comparePassword(password);
+      const match = await user.comparePassword(password);
       if (!match) return res.status(401).send({ ok: false, code: EMAIL_OR_PASSWORD_INVALID });
 
       user.set({ last_login_at: Date.now() });
