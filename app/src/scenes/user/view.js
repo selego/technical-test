@@ -12,7 +12,6 @@ export default () => {
   const { id } = useParams();
   useEffect(() => {
     (async () => {
-      console.log(data._id);
       const { data } = await api.get(`/user/${id}`);
       setUser(data);
     })();
