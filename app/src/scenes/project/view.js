@@ -24,6 +24,7 @@ export default function ProjectView() {
   useEffect(() => {
     (async () => {
       const { data: u } = await api.get(`/project/${id}`);
+      console.log(u)
       setProject(u);
     })();
   }, []);
@@ -61,6 +62,7 @@ export default function ProjectView() {
 
 const ProjectDetails = ({ project }) => {
   console.log(project);
+
   return (
     <div>
       <div className="flex flex-wrap p-3">

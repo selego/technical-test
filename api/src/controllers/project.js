@@ -20,7 +20,8 @@ router.get("/list", passport.authenticate("user", { session: false }), async (re
 router.get("/:id", passport.authenticate("user", { session: false }), async (req, res) => {
   try {
     const data = await ProjectObject.find({ _id: req.params.id });
-    return res.status(200).send({ ok: true, data });
+    const normalizedData = data[0]
+    return res.status(200).send({ ok: true, data: normalizedData });
   } catch (error) {
     console.log(error);
     res.status(500).send({ ok: false, code: SERVER_ERROR, error });

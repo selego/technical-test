@@ -41,22 +41,24 @@ router.get("/:id", passport.authenticate("user", { session: false }), async (req
 });
 
 router.post("/", passport.authenticate("user", { session: false }), async (req, res) => {
+
   try {
     if (!validatePassword(req.body.password)) return res.status(400).send({ ok: false, user: null, code: PASSWORD_NOT_VALIDATED });
-
-    const user = await UserObject.create({ ...req.body, organisation: req.user.organisation });
-
+    const user = await UserObject.create({ ...req.body, organisation: `${req.user.organisation}-${req.body.name}` });
     return res.status(200).send({ data: user, ok: true });
   } catch (error) {
-    if (error.code === 11000) return res.status(409).send({ ok: false, code: USER_ALREADY_REGISTERED });
-    console.log(error);
+    if (error.code === 11000) {
+      console.log(error);
+      return res.status(409).send({ ok: false, code: USER_ALREADY_REGISTERED });
+    }
     return res.status(500).send({ ok: false, code: SERVER_ERROR });
   }
 });
 
 router.get("/", passport.authenticate("user", { session: false }), async (req, res) => {
+  const organisationRegex = new RegExp("\\b" + req.user.organisation + "\\b(?:-)?")
   try {
-    const users = await UserObject.find({ ...req.query, organisation: req.user.organisation }).sort("-last_login_at");
+    const users = await UserObject.find({ ...req.query, organisation: organisationRegex }).sort("-last_login_at");
     return res.status(200).send({ ok: true, data: users });
   } catch (error) {
     console.log(error);

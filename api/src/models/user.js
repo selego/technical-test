@@ -26,7 +26,7 @@ const Schema = new mongoose.Schema({
   description: { type: String },
   job_title: { type: String },
 
-  organisation: { type: String, trim: true, unique: true },
+  organisation: { type: String, trim: true },
   status: { type: String, default: "active" },
   availability: { type: String, default: "available" },
   address: { type: String },
