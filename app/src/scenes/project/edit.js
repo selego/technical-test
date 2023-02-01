@@ -17,7 +17,8 @@ export default function EditProject() {
   useEffect(() => {
     (async () => {
       const { data: u } = await api.get(`/project/${id}`);
-      setProject(u);
+      console.log(u);
+      setProject(u[0]);
     })();
   }, []);
 
@@ -47,6 +48,7 @@ export default function EditProject() {
           <Formik
             initialValues={project}
             onSubmit={async (values) => {
+              console.log(project, values);
               try {
                 await api.put(`/project/${project._id}`, values);
                 toast.success(`${project.name} updated!`);
@@ -66,7 +68,7 @@ export default function EditProject() {
                   <div className="flex gap-4 flex-wrap">
                     <div className="w-full md:w-[260px] mt-2">
                       <div className="text-[14px] text-[#212325] font-medium	">Name of project</div>
-                      <input className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]" name="name" disabled value={values.name} onChange={handleChange} />
+                      <input className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]" name="name" disabled value={project.name} onChange={handleChange} />
                     </div>
                     <div className="w-full md:w-[260px] mt-2">
                       <div className="text-[14px] text-[#212325] font-medium	">Lead by name</div>

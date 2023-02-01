@@ -5,15 +5,18 @@ import api from "../services/api";
 // eslint-disable-next-line react/display-name
 export default ({ value, active = true, onChange }) => {
   const [projects, setProjects] = useState([]);
-  
+
   useEffect(() => {
     (async () => {
       let str = ``;
       if (active) str = `?status=active`;
       const res = await api.get("/project" + str);
+      console.log(res);
       setProjects(res.data);
     })();
   }, []);
+
+  console.log(value);
 
   return (
     <div>

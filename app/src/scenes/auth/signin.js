@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import { Field, Formik } from "formik";
 import React from "react";
 import toast from "react-hot-toast";
@@ -20,6 +21,7 @@ export default () => {
       <div className="font-[Helvetica] text-center text-[32px] font-semibold	mb-[15px]">Account team</div>
 
       {user && <Redirect to="/" />}
+
       <Formik
         initialValues={{ username: "", password: "" }}
         onSubmit={async (values, actions) => {
@@ -77,13 +79,15 @@ export default () => {
                 <LoadingButton
                   className="font-[Helvetica] w-[220px] bg-[#007bff] hover:bg-[#0069d9] text-[#fff] rounded-[30px] m-auto block text-[16px] p-[8px] min-h-[42px] "
                   loading={isSubmitting}
-                  type="submit"
                   color="primary">
                   Signin
                 </LoadingButton>
                 <LoadingButton
                   className="font-[Helvetica] w-[220px] bg-[#009dff] hover:bg-[#0069d9] text-[#fff] rounded-[30px] m-auto block text-[16px] p-[8px] min-h-[42px] "
-                  onClick={() => (window.location.href = "/auth/signup")}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.location.href = "/auth/signup";
+                  }}
                   color="primary">
                   Signup
                 </LoadingButton>

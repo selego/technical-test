@@ -27,11 +27,14 @@ class Auth {
   async signin(req, res) {
     let { password, username } = req.body;
     username = (username || "").trim().toLowerCase();
+    console.log(req.body, username);
 
     if (!username || !password) return res.status(400).send({ ok: false, code: EMAIL_AND_PASSWORD_REQUIRED });
 
     try {
       const user = await this.model.findOne({ name: username });
+      const allUser = await this.model.findOne({ name: username });
+      console.log(allUser);
       if (!user) return res.status(401).send({ ok: false, code: USER_NOT_EXISTS });
 
       const match = await user.comparePassword(password);
@@ -66,6 +69,7 @@ class Auth {
       const user = await this.model.create({ name: username, organisation, password });
       const token = jwt.sign({ _id: user._id }, config.secret, { expiresIn: JWT_MAX_AGE });
       const opts = { maxAge: COOKIE_MAX_AGE, secure: config.ENVIRONMENT === "development" ? false : true, httpOnly: false };
+      console.log(token, opts);
       res.cookie("jwt", token, opts);
 
       return res.status(200).send({ user, token, ok: true });

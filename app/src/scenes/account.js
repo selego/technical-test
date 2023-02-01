@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";

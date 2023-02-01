@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import React, { useEffect, useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
@@ -22,6 +23,8 @@ export default ({ value = "", onChange, start = 0, name = "date", indexDefaultVa
     setMonths(arr);
     if (!value && indexDefaultValue >= 0) onChange({ target: { value: arr[indexDefaultValue], name } });
   }, []);
+
+  console.log(value);
 
   return (
     <div className="flex gap-2 items-center">

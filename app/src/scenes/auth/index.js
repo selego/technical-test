@@ -6,7 +6,7 @@ import Signup from "./signup";
 const Auth = () => {
   return (
     <Switch>
-      <Route path="/auth/signup" component={Signup} />
+      <Route exact path="/auth/signup" component={Signup} />
       <Route path="/auth" component={Signin} />
     </Switch>
   );
