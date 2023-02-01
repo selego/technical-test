@@ -17,7 +17,6 @@ export default function EditProject() {
   useEffect(() => {
     (async () => {
       const { data: u } = await api.get(`/project/${id}`);
-      console.log(u);
       setProject(u[0]);
     })();
   }, []);
@@ -48,7 +47,6 @@ export default function EditProject() {
           <Formik
             initialValues={project}
             onSubmit={async (values) => {
-              console.log(project, values);
               try {
                 await api.put(`/project/${project._id}`, values);
                 toast.success(`${project.name} updated!`);

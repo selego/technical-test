@@ -11,12 +11,9 @@ export default ({ value, active = true, onChange }) => {
       let str = ``;
       if (active) str = `?status=active`;
       const res = await api.get("/project" + str);
-      console.log(res);
       setProjects(res.data);
     })();
   }, []);
-
-  console.log(value);
 
   return (
     <div>
