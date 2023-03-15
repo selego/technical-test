@@ -49,18 +49,23 @@ const Activity = () => {
 const Activities = ({ date, user, project }) => {
   const [activities, setActivities] = useState([]);
   const [open, setOpen] = useState(null);
+  const { role } = useSelector((state) => state.Auth.user);
+
+  async function getData() {
+    const { data } = await api.get(`/activity?date=${date.getTime()}&user=${user._id}&project=${project}`);
+    const projects = await api.get(`/project/list`);
+    setActivities(
+      data.map((activity) => {
+        return { ...activity, projectName: (activity.projectName = projects.data.find((project) => project._id === activity.projectId)?.name) };
+      }),
+    );
+  }
 
   useEffect(() => {
-    (async () => {
-      const { data } = await api.get(`/activity?date=${date.getTime()}&user=${user.name}&project=${project}`);
-      const projects = await api.get(`/project/list`);
-      setActivities(
-        data.map((activity) => {
-          return { ...activity, projectName: (activity.projectName = projects.data.find((project) => project._id === activity.projectId)?.name) };
-        }),
-      );
-      setOpen(null);
-    })();
+    getData();
+    return () => {
+      setActivities([]);
+    };
   }, [date]);
 
   const days = getDaysInMonth(date.getMonth(), date.getFullYear());
@@ -96,8 +101,15 @@ const Activities = ({ date, user, project }) => {
   async function onDelete(i) {
     if (window.confirm("Are you sure ?")) {
       const activity = activities[i];
-      await api.remove(`/activity/${activity._id}`);
-      toast.success(`Deleted ${activity.project}`);
+      api
+        .remove(`/activity/${activity._id}`)
+        .then(() => {
+          toast.success(`Deleted ${activity.projectName}`);
+          getData();
+        })
+        .catch(() => {
+          toast.error(`Erreur`);
+        });
     }
   }
 
@@ -193,11 +205,13 @@ const Activities = ({ date, user, project }) => {
                               <Field key={`${e.project} ${j}`} invoiced={e.invoiced} value={f.value || 0} onChange={(a) => onUpdateValue(i, j, parseFloat(a.target.value || 0))} />
                             );
                           })}
-                          <th className={`border border-[#E5EAEF] py-[6px]`}>
-                            <div className={`flex justify-center cursor-pointer text-xl hover:text-red-500`}>
-                              <MdDeleteForever onClick={() => onDelete(i)} />
-                            </div>
-                          </th>
+                          {role === "ADMIN" && (
+                            <th className={`border border-[#E5EAEF] py-[6px]`}>
+                              <div className={`flex justify-center cursor-pointer text-xl hover:text-red-500`}>
+                                <MdDeleteForever onClick={() => onDelete(i)} />
+                              </div>
+                            </th>
+                          )}
                         </tr>
 
                         {open === i && (
@@ -211,7 +225,7 @@ const Activities = ({ date, user, project }) => {
                                 <textarea
                                   value={e.comment}
                                   onChange={(e) => onUpdateComment(i, e.target.value)}
-                                  placeholder={`Please add a comment on what you deliver on ${e.project} (We need to show value created to clients)`}
+                                  placeholder={`Please add a comment on what you deliver on ${e.projectName} (We need to show value created to clients)`}
                                   rows={6}
                                   className="w-full text-sm pt-2 pl-2"
                                 />

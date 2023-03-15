@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { ActivitiesIcon, HomeIcon, PeopleIcon, ProjectsIcon } from "../assets/Icons";
 
@@ -7,6 +8,7 @@ const Drawer = () => {
 };
 
 const DrawerDesktop = () => {
+  const { role } = useSelector((state) => state.Auth.user);
   return (
     <div className="flex-shrink-0 overflow-y-auto">
       <ul className={`list-none px-3 z-10 border-r border-[#a0a6b124] space-y-2 translate-x-0 duration-200`}>
@@ -14,7 +16,7 @@ const DrawerDesktop = () => {
           <Link to="/" title="Home" Icon={HomeIcon} />
           <Link to="/project" title="Projects" Icon={ProjectsIcon} />
           <Link to="/activity" title="Activities" Icon={ActivitiesIcon} />
-          <Link to="/user" title="People" Icon={PeopleIcon} />
+          {role === "ADMIN" && <Link to="/user" title="People" Icon={PeopleIcon} />}
         </Section>
 
         <div className="h-10" />

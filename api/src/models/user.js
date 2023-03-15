@@ -13,7 +13,7 @@ const Schema = new mongoose.Schema({
   avatar: { type: String, default: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y" },
   banner: { type: String, default: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y" },
 
-  password: { type: String },
+  password: { type: String, select: false },
 
   last_login_at: { type: Date, default: Date.now },
   created_at: { type: Date, default: Date.now },
@@ -25,6 +25,8 @@ const Schema = new mongoose.Schema({
 
   description: { type: String },
   job_title: { type: String },
+
+  role: { type: String, enum: ["ADMIN", "USER"], default: "USER" },
 
   organisation: { type: String, trim: true, unique: true },
   status: { type: String, default: "active" },
