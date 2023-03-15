@@ -14,12 +14,18 @@ const ProjectList = () => {
 
   const history = useHistory();
 
-  useEffect(() => {
-    (async () => {
-      const { data: u } = await api.get("/project");
+  async function getProjects() {
+    const { data: u } = await api.get("/project");
       setProjects(u);
-    })();
-  }, []);
+  }
+
+  useEffect(() => {
+    getProjects();
+    return () => {
+      setProjects([]);
+    }
+  }, [])
+  
 
   useEffect(() => {
     const p = (projects || []).filter((p) => p.status === "active");
@@ -35,7 +41,7 @@ const ProjectList = () => {
 
   return (
     <div className="w-full p-2 md:!px-8">
-      <Create onChangeSearch={handleSearch} />
+      <Create onChangeSearch={handleSearch} refresh={getProjects}/>
       <div className="py-3">
         {activeProjects.map((hit) => {
           return (
@@ -92,7 +98,7 @@ const Budget = ({ project }) => {
   return <ProgressBar percentage={width} max={budget_max_monthly} value={total} />;
 };
 
-const Create = ({ onChangeSearch }) => {
+const Create = ({ onChangeSearch ,refresh}) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -146,6 +152,7 @@ const Create = ({ onChangeSearch }) => {
                   if (!res.ok) throw res;
                   toast.success("Created!");
                   setOpen(false);
+                  refresh?.();
                 } catch (e) {
                   console.log(e);
                   toast.error("Some Error!", e.code);
