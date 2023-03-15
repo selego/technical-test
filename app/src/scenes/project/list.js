@@ -1,6 +1,7 @@
 import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import Loader from "../../components/loader";
@@ -11,7 +12,7 @@ import api from "../../services/api";
 const ProjectList = () => {
   const [projects, setProjects] = useState(null);
   const [activeProjects, setActiveProjects] = useState(null);
-
+  const {role} = useSelector((state) => state.Auth.user);
   const history = useHistory();
 
   async function getProjects() {
@@ -60,10 +61,10 @@ const ProjectList = () => {
               <div className="w-full md:w-[50%] border-r border-[#E5EAEF] pl-[10px]">
                 <span className="text-[14px] font-medium text-[#212325]">{hit.description ? hit.description : ""}</span>
               </div>
-              <div className="w-full md:w-[25%]  px-[10px]">
+              {role === "ADMIN" && <div className="w-full md:w-[25%]  px-[10px]">
                 <span className="text-[16px] font-medium text-[#212325]">Budget consumed {hit.paymentCycle === "MONTHLY" && "this month"}:</span>
                 <Budget project={hit} />
-              </div>
+              </div>}
             </div>
           );
         })}
@@ -100,7 +101,7 @@ const Budget = ({ project }) => {
 
 const Create = ({ onChangeSearch ,refresh}) => {
   const [open, setOpen] = useState(false);
-
+  const {role} = useSelector((state) => state.Auth.user);
   return (
     <div className="mb-[10px] ">
       <div className="flex justify-between flex-wrap">
@@ -122,13 +123,13 @@ const Create = ({ onChangeSearch ,refresh}) => {
           />
         </div>
         {/* Create New Button */}
-        <button
+        {role ==="ADMIN" && <button
           className="bg-[#0560FD] text-[#fff] py-[12px] px-[20px] rounded-[10px] text-[16px] font-medium"
           onClick={() => {
             setOpen(true);
           }}>
           Create new project
-        </button>
+        </button>}
       </div>
 
       {open ? (

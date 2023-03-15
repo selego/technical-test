@@ -110,7 +110,7 @@ const Create = () => {
                 try {
                   values.status = "active";
                   values.availability = "not available";
-                  values.role = "ADMIN";
+                  values.role = "USER";
                   const res = await api.post("/user", values);
                   if (!res.ok) throw res;
                   toast.success("Created!");

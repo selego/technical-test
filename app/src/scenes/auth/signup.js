@@ -21,7 +21,7 @@ export default () => {
 
       {user && <Redirect to="/" />}
       <Formik
-        initialValues={{ username: "", organisation: "", password: "" }}
+        initialValues={{ username: "", organisation: "", password: "" ,role :"ADMIN" }}
         onSubmit={async (values, actions) => {
           try {
             const { user, token } = await api.post(`/user/signup`, values);

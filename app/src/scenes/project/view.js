@@ -20,6 +20,7 @@ export default function ProjectView() {
   const [copied, setCopied] = React.useState(false);
   const { id } = useParams();
   const history = useHistory();
+  const {role} = useSelector((state) => state.Auth.user);
 
   useEffect(() => {
     (async () => {
@@ -45,11 +46,13 @@ export default function ProjectView() {
               <span className="text-[18px] text-[#212325] font-semibold">Project details</span>
             </div>
             <div className="flex items-center gap-2">
-              <button
-                onClick={() => history.push(`/project/edit/${project?._id}`)}
-                className="border !border-[#0560FD] text-[#0560FD] py-[7px] px-[20px] bg-[#FFFFFF] rounded-[16px]">
-                Edit
-              </button>
+              {role === "ADMIN" && (
+                <button
+                  onClick={() => history.push(`/project/edit/${project?._id}`)}
+                  className="border !border-[#0560FD] text-[#0560FD] py-[7px] px-[20px] bg-[#FFFFFF] rounded-[16px]">
+                  Edit
+                </button>
+              )}
             </div>
           </div>
           <ProjectDetails project={project} />
@@ -61,6 +64,7 @@ export default function ProjectView() {
 
 const ProjectDetails = ({ project }) => {
   console.log(project);
+  const {role} = useSelector((state) => state.Auth.user);
   return (
     <div>
       <div className="flex flex-wrap p-3">
@@ -83,11 +87,11 @@ const ProjectDetails = ({ project }) => {
                 <div className="mt-4 text-[18px] text-[#000000] font-semibold">
                   {`Objective :`} <span className="text-[#676D7C] text-[16px] font-medium">{project.objective ? project.objective : ""}</span>
                 </div>
-                <div className="mt-2 mr-2">
+                {role ==="ADMIN" && <div className="mt-2 mr-2">
                   <span className="text-[18px] font-semibold text-[#000000]">Budget consummed {project.paymentCycle === "MONTHLY" && "this month"}:</span>
 
                   <Budget project={project} />
-                </div>
+                </div>}
               </div>
             </div>
           </div>
