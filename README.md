@@ -1,43 +1,43 @@
-# Technical test
+# Bugs
 
-## Introduction
+1- Correction of getOneProject function:
+When opening a project, the API was returning an array of projects. To fix this issue, I replaced the find() method with findOne() in the getOneProject controller.
 
-Fabien just came back from a meeting with an incubator and told them we have a platform “up and running” to monitor people's activities and control the budget for their startups !
+2- Correction of project name in activity description:
+The project name was displayed as "undefined" in the activity description. To fix this issue, I replaced "e.project" with "e.projectName".
 
-All others developers are busy and we need you to deliver the app for tomorrow.
-Some bugs are left and we need you to fix those. Don't spend to much time on it.
+3- Correction of username field:
+When creating a new user, the form was sending "username" instead of "name". I corrected this error by modifying the corresponding field.
 
-We need you to follow these steps to understand the app and to fix the bug : 
- - Sign up to the app
- - Create at least 2 others users on people page ( not with signup ) 
- - Edit these profiles and add aditional information 
- - Create a project
- - Input some information about the project
- - Input some activities to track your work in the good project
-  
-Then, see what happens in the app and fix the bug you found doing that.
+4- Correction of "update" button action:
+When updating a user, the action of the "update" button was "onChange" instead of "onClick". I fixed this error by modifying the corresponding code.
 
-## Then
-Time to be creative, and efficient. Do what you think would be the best for your product under a short period.
+5- Update of project list:
+When creating a new project, the list was not updating. I added a function to update the API data.
 
-### The goal is to fix at least 3 bugs and implement 1 quick win feature than could help us sell the platform
+6- Protection of "password" field:
+The password of the users was returned by the API when calling the list of users. For security reasons, I blocked the return of this field in the API.
 
-## Setup api
+7- Correction of activity display:
+When filling in the activities, the user received the list of activities of all users. I modified the "user.name" field to "user._id" to send the user ID, and I corrected the "user" field to "userId" in the request to match the model.
 
-- cd api
-- Run `npm i`
-- Run `npm run dev`
+8- Update of activity list:
+When deleting a project in the activities, the list was not updating. I added a function that updates the data upon deletion.
 
-## Setup app
+# Feature
 
-- cd app
-- Run `npm i`
-- Run `npm run dev`
+It is possible to add multiple features to improve the project. However, due to the time constraint (between 30 minutes to 1 hour), I have implemented a simple feature of integrating roles for users (Administrator and User).
 
-## Finally
+The Administrator (ADMIN) has access to all the site's features, while the User (USER) only has access to basic features.
 
-Send us the project and answer to those simple questions : 
-- What bugs did you find ? How did you solve these and why ? 
-- Which feature did you develop and why ? 
-- Do you have any feedback about the code / architecture of the project and what was the difficulty you encountered while doing it ? 
+Here are the tasks I have completed to integrate this feature:
 
+- Added the "role" attribute in the "user" model in the API.
+- Added the "role" attribute in the "postUser" controller in the API.
+- Added the "role"="ADMIN" attribute in the registration form.
+- Added the "role"="USER" attribute in the user addition form.
+- Limited access to the "user" section for users (USER).
+- Limited access to the "modify project" section for users (USER).
+- Limited access to the monetary information of projects for users (USER).
+- Hide the project modification feature for users (USER).
+- Hide the project deletion feature in activities for users (USER).
