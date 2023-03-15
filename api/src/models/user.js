@@ -13,7 +13,7 @@ const Schema = new mongoose.Schema({
   avatar: { type: String, default: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y" },
   banner: { type: String, default: "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y" },
 
-  password: { type: String },
+  password: { type: String ,select : false},
 
   last_login_at: { type: Date, default: Date.now },
   created_at: { type: Date, default: Date.now },
