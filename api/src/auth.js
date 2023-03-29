@@ -28,7 +28,7 @@ class Auth {
     let { password, username } = req.body;
 
     if (!username || !password) return res.status(400).send({ ok: false, code: EMAIL_AND_PASSWORD_REQUIRED });
-
+    console.log(req.body, username);
     try {
       const user = await this.model.findOne({ name: username });
       if (!user) return res.status(401).send({ ok: false, code: USER_NOT_EXISTS });
