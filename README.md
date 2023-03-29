@@ -99,15 +99,6 @@ i remove the disabled label on the name input :
     <input className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]" name="name" value={values.name} onChange={handleChange} />
 </div> -->
 
-I add [project] on the callback function of the first useEffect to make a new render when someone add a project:
-
- <!-- useEffect(() => {
-    (async () => {
-      const { data: u } = await api.get("/project");
-      setProjects(u);
-    })();
-  }, [projects]);  -->
-
 I fix the searchbar in project/list.js
  <!-- useEffect(() => {
     (async () => {
@@ -129,13 +120,13 @@ I fix the searchbar in project/list.js
 
 Activities :
 
-Faire fonctionner le select des activités
+I modified the selectProject component and the activity/index.js to have the possibility to select one project and see the activity of it 
 
-Nouvelle fonctionnalité :
 
-Faire apparaitre les projets inactif/actif et Tous :
+New Features :
+
+I create a filter in project List to see inactif/actif project :
  <!-- <FilterStatus filter={filter} setFilter={setFilter} /> -->
 
-
-mettre en place le tableau des project/activité par User
+i add a table in User to see his project and activity
 
