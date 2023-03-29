@@ -83,14 +83,17 @@ i change query.user = req.query.userId by query.userId = req.query.userId
     if (req.query.userId) query.userId = req.query.userId; -->
 
 Project:
-when we set the variable project in the first render (with the useEffect) i take the object out of the array because we only want one Project to edit :
+api part : change find to findOne to don't get an array
+<!-- router.get("/:id", passport.authenticate("user", { session: false }), async (req, res) => {
+  try {
+    const data = await ProjectObject.findOne({ _id: req.params.id });
+    return res.status(200).send({ ok: true, data });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ ok: false, code: SERVER_ERROR, error });
+  }
+}); -->
 
- <!-- useEffect(() => {
-    (async () => {
-      const { data: u } = await api.get(`/project/${id}`);
-      setProject(u[0]);
-    })();
-  }, []); -->
 
 i remove the disabled label on the name input :
 
@@ -105,7 +108,7 @@ I fix the searchbar in project/list.js
       const { data: u } = await api.get("/project");
       setProjects(u);
     })();
-  }, [projects]);
+  }, []);
 
   useEffect(() => {
     if (!projects) return;
