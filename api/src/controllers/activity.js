@@ -10,7 +10,8 @@ const SERVER_ERROR = "SERVER_ERROR";
 router.get("/", passport.authenticate("user", { session: false }), async (req, res) => {
   try {
     const query = {};
-    if (req.query.userId) query.user = req.query.userId;
+    console.log(req.query);
+    if (req.query.userId) query.userId = req.query.userId;
     if (req.query.projectId) query.projectId = req.query.projectId;
     if (req.query.date) {
       if (req.query.date.startsWith("gte:")) {
@@ -29,8 +30,9 @@ router.get("/", passport.authenticate("user", { session: false }), async (req, r
       const date = new Date(parseInt(req.query.dateTo));
       query.date = { ...query.date, $lte: date };
     }
-
+    console.log(query)
     const data = await ActivityObject.find({ ...query, organisation: req.user.organisation }).sort("-created_at");
+    console.log(data);
     return res.status(200).send({ ok: true, data });
   } catch (error) {
     console.log(error);

@@ -10,8 +10,8 @@ import ProgressBar from "../../components/ProgressBar";
 import api from "../../services/api";
 const ProjectList = () => {
   const [projects, setProjects] = useState(null);
-  const [activeProjects, setActiveProjects] = useState(null);
-
+  const [projectsFiltered, setProjectsFiltered] = useState(null);
+  const [filter, setFilter] = useState({ status: "active", search: "" });
   const history = useHistory();
 
   useEffect(() => {
@@ -22,22 +22,22 @@ const ProjectList = () => {
   }, []);
 
   useEffect(() => {
-    const p = (projects || []).filter((p) => p.status === "active");
-    setActiveProjects(p);
-  }, [projects]);
+    if (!projects) return;
+    setProjectsFiltered(
+      projects
+        .filter((u) => !filter?.status || u.status === filter?.status)
+        .filter((u) => !filter?.search || u.name.toLowerCase().includes(filter?.search.toLowerCase())),
+      );
+  }, [projects, filter]);
 
-  if (!projects || !activeProjects) return <Loader />;
-
-  const handleSearch = (searchedValue) => {
-    const p = (projects || []).filter((p) => p.status === "active").filter((e) => e.name.toLowerCase().includes(searchedValue.toLowerCase()));
-    setActiveProjects(p);
-  };
+  if (!projects || !projectsFiltered) return <Loader />;
 
   return (
     <div className="w-full p-2 md:!px-8">
-      <Create onChangeSearch={handleSearch} />
+      <Create setFilter={setFilter} />
+      <FilterStatus filter={filter} setFilter={setFilter} />
       <div className="py-3">
-        {activeProjects.map((hit) => {
+        {projectsFiltered.map((hit) => {
           return (
             <div
               key={hit._id}
@@ -62,6 +62,33 @@ const ProjectList = () => {
           );
         })}
       </div>
+    </div>
+  );
+};
+
+const FilterStatus = ({ filter, setFilter }) => {
+  return (
+    <div className="flex">
+      <select
+        className="w-[180px] bg-[#FFFFFF] text-[14px] text-[#212325] font-normal py-2 px-[14px] rounded-[10px] border-r-[16px] border-[transparent] cursor-pointer"
+        value={filter.status}
+        onChange={(e) =>{
+          e.persist();
+          setFilter({ ...filter, status: e.target.value })}
+        }> 
+        <option disabled>Status</option>
+        <option value={""}>All status</option>
+        {[
+          { value: "active", label: "Active" },
+          { value: "inactive", label: "Inactive" },
+        ].map((e) => {
+          return (
+            <option key={e.value} value={e.value} label={e.label}>
+              {e.label}
+            </option>
+          );
+        })}
+      </select>
     </div>
   );
 };
@@ -92,7 +119,7 @@ const Budget = ({ project }) => {
   return <ProgressBar percentage={width} max={budget_max_monthly} value={total} />;
 };
 
-const Create = ({ onChangeSearch }) => {
+const Create = ({ setFilter }) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -112,7 +139,10 @@ const Create = ({ onChangeSearch }) => {
             name="q"
             className="py-2 w-[364px] h-[48px] text-[16px] font-medium text-[black] rounded-[10px] bg-[#F9FBFD] border border-[#FFFFFF] pl-10"
             placeholder="Search"
-            onChange={(e) => onChangeSearch(e.target.value)}
+            onChange={(e) => {
+              e.persist();
+              setFilter((prev) => ({ ...prev, search: e.target.value }));
+            }}
           />
         </div>
         {/* Create New Button */}
@@ -156,7 +186,7 @@ const Create = ({ onChangeSearch }) => {
                 <React.Fragment>
                   <div className="w-full md:w-6/12 text-left">
                     <div>
-                      <div className="text-[14px] text-[#212325] font-medium	">Name</div>
+                      <div className="text-[14px] text-[#212325] font-medium">Name</div>
                       <input className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]" name="name" value={values.name} onChange={handleChange} />
                     </div>
                     <LoadingButton

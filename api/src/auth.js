@@ -26,7 +26,6 @@ class Auth {
 
   async signin(req, res) {
     let { password, username } = req.body;
-    username = (username || "").trim().toLowerCase();
 
     if (!username || !password) return res.status(400).send({ ok: false, code: EMAIL_AND_PASSWORD_REQUIRED });
 
@@ -60,7 +59,7 @@ class Auth {
   async signup(req, res) {
     try {
       const { password, username, organisation } = req.body;
-
+    
       if (password && !validatePassword(password)) return res.status(200).send({ ok: false, user: null, code: PASSWORD_NOT_VALIDATED });
 
       const user = await this.model.create({ name: username, organisation, password });

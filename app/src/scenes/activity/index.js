@@ -36,7 +36,7 @@ const Activity = () => {
       <div className="flex flex-wrap gap-5 p-2 md:!px-8">
         <SelectProject
           value={project}
-          onChange={(e) => setProject(e.name)}
+          onChange={(e) => setProject(e._id)}
           className="w-[180px] bg-[#FFFFFF] text-[#212325] py-[10px] px-[14px] rounded-[10px] border-r-[16px] border-[transparent] cursor-pointer shadow-sm font-normal text-[14px]"
         />
         <SelectMonth start={-3} indexDefaultValue={3} value={date} onChange={(e) => setDate(e.target.value)} showArrows />
@@ -52,13 +52,16 @@ const Activities = ({ date, user, project }) => {
 
   useEffect(() => {
     (async () => {
-      const { data } = await api.get(`/activity?date=${date.getTime()}&user=${user.name}&project=${project}`);
+      console.log(project);
+      const { data } = await api.get(`/activity?date=${date.getTime()}&user=${user.name}&projectId=${project}`);
+      console.log(data);
       const projects = await api.get(`/project/list`);
       setActivities(
         data.map((activity) => {
           return { ...activity, projectName: (activity.projectName = projects.data.find((project) => project._id === activity.projectId)?.name) };
         }),
       );
+      console.log(activities);
       setOpen(null);
     })();
   }, [date]);
@@ -173,7 +176,9 @@ const Activities = ({ date, user, project }) => {
                       return <Field key={`day-${i}`} value={v} disabled />;
                     })}
                   </tr>
-                  {activities.map((e, i) => {
+                  {activities
+                  // .sort((a, b) => b.total - a.total)
+                  .map((e, i) => {
                     return (
                       <React.Fragment key={e.project}>
                         <tr className="border-t border-b border-r border-[#E5EAEF]" key={`1-${e._id}`} onClick={() => setOpen(i)}>

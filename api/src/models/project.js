@@ -6,7 +6,7 @@ const Schema = new mongoose.Schema({
   name: { type: String, unique: true },
   description: { type: String },
   website: { type: String },
-
+  
   links: { type: [{ label: { type: String }, url: { type: String } }] },
   lead: { type: String },
 

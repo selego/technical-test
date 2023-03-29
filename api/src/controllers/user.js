@@ -45,7 +45,6 @@ router.post("/", passport.authenticate("user", { session: false }), async (req, 
     if (!validatePassword(req.body.password)) return res.status(400).send({ ok: false, user: null, code: PASSWORD_NOT_VALIDATED });
 
     const user = await UserObject.create({ ...req.body, organisation: req.user.organisation });
-
     return res.status(200).send({ data: user, ok: true });
   } catch (error) {
     if (error.code === 11000) return res.status(409).send({ ok: false, code: USER_ALREADY_REGISTERED });
