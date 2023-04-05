@@ -50,7 +50,6 @@ i delete the trim.lowercase to signin in api/auth :
 To signup :
 I add the type="password" to the password Input,
 
-
 To create a new people :
 
 app Part :
@@ -84,6 +83,7 @@ i change query.user = req.query.userId by query.userId = req.query.userId
 
 Project:
 api part : change find to findOne to don't get an array
+
 <!-- router.get("/:id", passport.authenticate("user", { session: false }), async (req, res) => {
   try {
     const data = await ProjectObject.findOne({ _id: req.params.id });
@@ -94,7 +94,6 @@ api part : change find to findOne to don't get an array
   }
 }); -->
 
-
 i remove the disabled label on the name input :
 
 <!-- <div className="w-full md:w-[260px] mt-2">
@@ -103,6 +102,7 @@ i remove the disabled label on the name input :
 </div> -->
 
 I fix the searchbar in project/list.js
+
  <!-- useEffect(() => {
     (async () => {
       const { data: u } = await api.get("/project");
@@ -120,16 +120,28 @@ I fix the searchbar in project/list.js
       console.log(projectsFiltered);
   }, [projects, filter]); -->
 
-
 Activities :
 
-I modified the selectProject component and the activity/index.js to have the possibility to select one project and see the activity of it 
-
+I modified the selectProject component and the activity/index.js to have the possibility to select one project and see the activity of it
 
 New Features :
 
 I create a filter in project List to see inactif/actif project :
+
  <!-- <FilterStatus filter={filter} setFilter={setFilter} /> -->
 
 i add a table in User to see his project and activity
 
+# Feedback
+
+## Bug fix
+
+Good job, most of the bug as been fixed with the best solution
+
+## New Feature
+
+Nice idea and well exectuted : no need to remake everything, a copy paste of the existing is good enough. Well done
+
+## General feedback
+
+All good, only careful with the console.log everywhere, nice to debug but to remove when doing a PR
