@@ -17,7 +17,7 @@ export default function EditProject() {
   useEffect(() => {
     (async () => {
       const { data: u } = await api.get(`/project/${id}`);
-      setProject(u);
+      setProject(u[0]);
     })();
   }, []);
 
@@ -34,7 +34,7 @@ export default function EditProject() {
   if (!project) return <Loader />;
   return (
     <div>
-      <div className="appContainer pt-24">
+      <div className="pt-24 appContainer">
         <div className="bg-[#FFFFFF] pb-4 border border-[#E5EAEF] rounded-[16px]">
           <div className="flex justify-between p-3 border-b border-[#E5EAEF]">
             <div>
@@ -58,12 +58,12 @@ export default function EditProject() {
             }}>
             {({ values, handleChange, handleSubmit, isSubmitting }) => (
               <React.Fragment>
-                <div className="flex gap-4 pl-4 pt-4">
+                <div className="flex gap-4 pt-4 pl-4">
                   {project.logo && <img className="w-[85px] h-[85px] border border-[#E5EAEF] rounded-[8px]" src={project.logo} alt="ProjectImage.png" />}
                 </div>
 
-                <div className="py-3 px-4">
-                  <div className="flex gap-4 flex-wrap">
+                <div className="px-4 py-3">
+                  <div className="flex flex-wrap gap-4">
                     <div className="w-full md:w-[260px] mt-2">
                       <div className="text-[14px] text-[#212325] font-medium	">Name of project</div>
                       <input className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]" name="name" disabled value={values.name} onChange={handleChange} />
@@ -129,7 +129,7 @@ export default function EditProject() {
                       value={values.objective}
                       onChange={handleChange}></textarea>
                   </div>
-                  <div className="text-xl mt-8">Links</div>
+                  <div className="mt-8 text-xl">Links</div>
                   <div className="w-full mt-3">
                     <div className="text-[14px] text-[#212325] font-medium	">Website</div>
                     <input className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]" name="website" value={values.website} onChange={handleChange} />
@@ -139,8 +139,8 @@ export default function EditProject() {
                     <div className="text-[14px] text-[#212325] font-medium	">Autres</div>
                     {(values.links || []).map((link) => {
                       return (
-                        <div className="flex flex-1 flex-row mt-2 items-center gap-1">
-                          <div className="flex gap-1 flex-1 items-center">
+                        <div className="flex flex-row items-center flex-1 gap-1 mt-2">
+                          <div className="flex items-center flex-1 gap-1">
                             <input
                               className="projectsInput mt-0 text-[14px] font-normal text-[#212325] rounded-[10px]"
                               value={link.label}
@@ -219,7 +219,7 @@ export default function EditProject() {
                     </form>
                   </div>
                 </div>
-                <div className="flex ml-3 mt-2">
+                <div className="flex mt-2 ml-3">
                   <LoadingButton
                     className="ml-[10px] bg-[#0560FD] text-[16px] font-medium text-[#fff] py-[12px] px-[22px] rounded-[10px]"
                     loading={isSubmitting}

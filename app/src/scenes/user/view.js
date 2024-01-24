@@ -21,7 +21,7 @@ export default () => {
 
   return (
     <div>
-      <div className="appContainer pt-24">
+      <div className="pt-24 appContainer">
         <Detail user={user} />
       </div>
     </div>
@@ -43,6 +43,7 @@ const Detail = ({ user }) => {
     <Formik
       initialValues={user}
       onSubmit={async (values) => {
+        console.log(values);
         try {
           await api.put(`/user/${user._id}`, values);
           toast.success("Updated!");
@@ -54,7 +55,7 @@ const Detail = ({ user }) => {
       {({ values, handleChange, handleSubmit, isSubmitting }) => {
         return (
           <React.Fragment>
-            <div className="flex justify-between flex-wrap mt-4">
+            <div className="flex flex-wrap justify-between mt-4">
               <div className="w-full md:w-[260px] mt-[10px] md:mt-0 ">
                 <div className="text-[14px] text-[#212325] font-medium	">Name</div>
                 <input
@@ -76,8 +77,20 @@ const Detail = ({ user }) => {
                   <option value="inactive">Inactive</option>
                 </select>
               </div>
+              <div className="w-full md:w-[165px] mt-[10px] md:mt-0">
+                <div className="text-[14px] text-[#212325] font-medium	">Availability</div>
+                <select
+                  className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]"
+                  type="select"
+                  name="availability"
+                  value={values.availability}
+                  onChange={handleChange}>
+                  <option value="available">Available</option>
+                  <option value="not available">Not available</option>
+                </select>
+              </div>
             </div>
-            <div className="flex flex-wrap justify-between mt-4	space-x-3">
+            <div className="flex flex-wrap justify-between mt-4 space-x-3">
               <div className="w-full md:w-[260px] ">
                 <div className="text-[14px] text-[#212325] font-medium">Job title</div>
                 <input
@@ -131,8 +144,12 @@ const Detail = ({ user }) => {
                 onChange={handleChange}></textarea>
             </div>
 
-            <div className="flex  mt-2">
-              <LoadingButton className="bg-[#0560FD] text-[16px] font-medium text-[#FFFFFF] py-[12px] px-[22px] rounded-[10px]" loading={isSubmitting} onChange={handleSubmit}>
+            <div className="flex mt-2">
+              <LoadingButton
+                className="bg-[#0560FD] text-[16px] font-medium text-[#FFFFFF] py-[12px] px-[22px] rounded-[10px]"
+                loading={isSubmitting}
+                // onChange={handleSubmit}
+                onClick={handleSubmit}>
                 Update
               </LoadingButton>
               <button className="ml-[10px] bg-[#F43F5E] text-[16px] font-medium text-[#FFFFFF] py-[12px] px-[22px] rounded-[10px]" onClick={deleteData}>

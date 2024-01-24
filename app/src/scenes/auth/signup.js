@@ -2,7 +2,7 @@ import { Field, Formik } from "formik";
 import React from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import validator from "validator";
 
 import { setUser } from "../../redux/auth/actions";
