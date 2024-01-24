@@ -1,8 +1,6 @@
 import { Chart as ChartJS, registerables } from "chart.js";
 import React, { useEffect, useState } from "react";
-import { IoIosAt, IoIosLink, IoIosStats, IoLogoGithub } from "react-icons/io";
-import { RiRoadMapLine } from "react-icons/ri";
-import { useSelector } from "react-redux";
+import { IoIosAt, IoIosLink } from "react-icons/io";
 import { useHistory, useParams } from "react-router-dom";
 
 import { getDaysInMonth } from "./utils";
@@ -24,7 +22,7 @@ export default function ProjectView() {
   useEffect(() => {
     (async () => {
       const { data: u } = await api.get(`/project/${id}`);
-      setProject(u);
+      setProject(u[0]);
     })();
   }, []);
 
@@ -72,7 +70,7 @@ const ProjectDetails = ({ project }) => {
                   <span className="w-fit text-[20px] text-[#0C1024] font-bold">Nom du projet : </span>
                   <span className="w-fit text-[20px] text-[#0C1024] font-bold">{project.name.toString()}</span>
                 </div>
-                <div className="flex flex-1 flex-column items-end gap-3">
+                <div className="flex items-end flex-1 gap-3 flex-column">
                   <Links project={project} />
                 </div>
               </div>
@@ -93,7 +91,7 @@ const ProjectDetails = ({ project }) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-wrap p-3 gap-4"></div>
+      <div className="flex flex-wrap gap-4 p-3"></div>
       <Activities project={project} />
     </div>
   );
@@ -155,7 +153,7 @@ const Activities = ({ project }) => {
 
   return (
     <div>
-      <div className="flex flex-wrap p-3 gap-4 text-black	">
+      <div className="flex flex-wrap gap-4 p-3 text-black ">
         <div className="w-full bg-[#ffffff] border border-[#E5EAEF] rounded-[16px] overflow-hidden">
           <div className="flex gap-5 p-2">
             <SelectMonth start={0} indexDefaultValue={0} value={date} onChange={(e) => setDate(e.target.value)} showArrows />
@@ -206,8 +204,8 @@ const Activities = ({ project }) => {
                         <React.Fragment key={`${e.user}`}>
                           <tr className="border-t border-b border-r border-[#E5EAEF]" key={`1-${e._id}`}>
                             <th className="w-[100px] border-t border-b border-r text-[12px] font-bold text-[#212325] text-left">
-                              <div className="flex flex-1 items-center justify-between gap-1 px-2">
-                                <div className="flex flex-1 items-center justify-start gap-1">
+                              <div className="flex items-center justify-between flex-1 gap-1 px-2">
+                                <div className="flex items-center justify-start flex-1 gap-1">
                                   <img
                                     className="relative z-30 inline object-cover w-[25px] h-[25px] border border-white rounded-full"
                                     src={e?.userAvatar}
@@ -215,7 +213,7 @@ const Activities = ({ project }) => {
                                   />
                                   <div>{e.user}</div>
                                 </div>
-                                <div className="text-md italic font-normal">{(e.total / 8).toFixed(2)} days</div>
+                                <div className="italic font-normal text-md">{(e.total / 8).toFixed(2)} days</div>
                               </div>
                             </th>
                             {e.detail.map((f, j) => {
@@ -265,9 +263,9 @@ const Links = ({ project }) => {
     <div className="flex flex-wrap gap-3">
       {project.website && (
         <div className="group text-sm font-medium	text-gray-700 border-[1px] border-gray-700 rounded-full overflow-hidden">
-          <a target="blank" href={project.website} className="break-words cursor-pointer text-gray-700 hover:text-white hover:bg-gray-700 flex hover:no-underline h-full">
-            <div className="flex items-center bg-gray-700 py-1 px-2 rounded-r-full ">
-              <IoIosAt className="group-hover:scale-110 text-white" />
+          <a target="blank" href={project.website} className="flex h-full text-gray-700 break-words cursor-pointer hover:text-white hover:bg-gray-700 hover:no-underline">
+            <div className="flex items-center px-2 py-1 bg-gray-700 rounded-r-full ">
+              <IoIosAt className="text-white group-hover:scale-110" />
             </div>
             <div className="flex items-center px-3 py-1">Website</div>
           </a>
@@ -275,9 +273,9 @@ const Links = ({ project }) => {
       )}
       {project.links?.map((link) => (
         <div className="group text-sm font-medium	text-blue-700 border-[1px] border-blue-700 rounded-full overflow-hidden">
-          <a target="blank" href={link.url} className="break-words cursor-pointer text-blue-700 hover:text-white hover:bg-blue-700 flex hover:no-underline h-full">
-            <div className="flex items-center bg-blue-700 py-1 px-2 rounded-r-full ">
-              <IoIosLink className="group-hover:scale-110 text-white" />
+          <a target="blank" href={link.url} className="flex h-full text-blue-700 break-words cursor-pointer hover:text-white hover:bg-blue-700 hover:no-underline">
+            <div className="flex items-center px-2 py-1 bg-blue-700 rounded-r-full ">
+              <IoIosLink className="text-white group-hover:scale-110" />
             </div>
             <div className="flex items-center px-3 py-1">
               {link?.label?.substring(0, 20)}
