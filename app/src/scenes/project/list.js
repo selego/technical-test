@@ -93,6 +93,8 @@ const Budget = ({ project }) => {
 };
 
 const Create = ({ onChangeSearch }) => {
+  const history = useHistory();
+
   const [open, setOpen] = useState(false);
 
   return (
@@ -145,6 +147,7 @@ const Create = ({ onChangeSearch }) => {
                   const res = await api.post("/project", values);
                   if (!res.ok) throw res;
                   toast.success("Created!");
+                  history.push(`/project/${res.data._id}`);
                   setOpen(false);
                 } catch (e) {
                   console.log(e);
