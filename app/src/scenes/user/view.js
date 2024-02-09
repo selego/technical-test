@@ -76,6 +76,18 @@ const Detail = ({ user }) => {
                   <option value="inactive">Inactive</option>
                 </select>
               </div>
+              <div className="w-full md:w-[165px] mt-[10px] md:mt-0">
+                <div className="text-[14px] text-[#212325] font-medium	">Status</div>
+                <select
+                  className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]"
+                  type="select"
+                  name="availability"
+                  value={values.availability}
+                  onChange={handleChange}>
+                  <option value="available">Available</option>
+                  <option value="not available">Not available</option>
+                </select>
+              </div>
             </div>
             <div className="flex flex-wrap justify-between mt-4	space-x-3">
               <div className="w-full md:w-[260px] ">
@@ -132,7 +144,7 @@ const Detail = ({ user }) => {
             </div>
 
             <div className="flex  mt-2">
-              <LoadingButton className="bg-[#0560FD] text-[16px] font-medium text-[#FFFFFF] py-[12px] px-[22px] rounded-[10px]" loading={isSubmitting} onChange={handleSubmit}>
+              <LoadingButton className="bg-[#0560FD] text-[16px] font-medium text-[#FFFFFF] py-[12px] px-[22px] rounded-[10px]" loading={isSubmitting} onClick={handleSubmit}>
                 Update
               </LoadingButton>
               <button className="ml-[10px] bg-[#F43F5E] text-[16px] font-medium text-[#FFFFFF] py-[12px] px-[22px] rounded-[10px]" onClick={deleteData}>
