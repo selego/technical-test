@@ -1,15 +1,13 @@
 import { Chart as ChartJS, registerables } from "chart.js";
 import React, { useEffect, useState } from "react";
-import { IoIosAt, IoIosLink, IoIosStats, IoLogoGithub } from "react-icons/io";
-import { RiRoadMapLine } from "react-icons/ri";
-import { useSelector } from "react-redux";
+import { IoIosAt, IoIosLink } from "react-icons/io";
 import { useHistory, useParams } from "react-router-dom";
 
 import { getDaysInMonth } from "./utils";
 
 import Loader from "../../components/loader";
 import api from "../../services/api";
-
+import toast from "react-hot-toast";
 import ProgressBar from "../../components/ProgressBar";
 import SelectMonth from "./../../components/selectMonth";
 
@@ -21,12 +19,20 @@ export default function ProjectView() {
   const { id } = useParams();
   const history = useHistory();
 
+  async function deleteProject() {
+    const confirm = window.confirm("Are you sure ?");
+    if (!confirm) return;
+    await api.remove(`/project/${project._id}`);
+    toast.success("successfully removed!");
+    history.push(`/project`);
+  }
+
   useEffect(() => {
     (async () => {
       const { data: u } = await api.get(`/project/${id}`);
       setProject(u);
     })();
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (copied) {
@@ -46,6 +52,11 @@ export default function ProjectView() {
             </div>
             <div className="flex items-center gap-2">
               <button
+                onClick={deleteProject}
+                className="bg-[#F43F5E] text-[#FFFFFF] py-[7px] px-[20px] rounded-[16px]">
+                Delete
+              </button>
+              <button
                 onClick={() => history.push(`/project/edit/${project?._id}`)}
                 className="border !border-[#0560FD] text-[#0560FD] py-[7px] px-[20px] bg-[#FFFFFF] rounded-[16px]">
                 Edit
@@ -60,7 +71,6 @@ export default function ProjectView() {
 }
 
 const ProjectDetails = ({ project }) => {
-  console.log(project);
   return (
     <div>
       <div className="flex flex-wrap p-3">
@@ -70,7 +80,7 @@ const ProjectDetails = ({ project }) => {
               <div className="flex justify-between gap-2">
                 <div className="flex gap-20">
                   <span className="w-fit text-[20px] text-[#0C1024] font-bold">Nom du projet : </span>
-                  <span className="w-fit text-[20px] text-[#0C1024] font-bold">{project.name.toString()}</span>
+                  <span className="w-fit text-[20px] text-[#0C1024] font-bold">{project?.name?.toString()}</span>
                 </div>
                 <div className="flex flex-1 flex-column items-end gap-3">
                   <Links project={project} />

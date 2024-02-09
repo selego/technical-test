@@ -19,8 +19,11 @@ router.get("/list", passport.authenticate("user", { session: false }), async (re
 
 router.get("/:id", passport.authenticate("user", { session: false }), async (req, res) => {
   try {
-    const data = await ProjectObject.find({ _id: req.params.id });
-    return res.status(200).send({ ok: true, data });
+    const project = await ProjectObject.findById(req.params.id);
+    if (!project) {
+      return res.status(404).send({ ok: false, message: 'Project not found' });
+    }
+    return res.status(200).send({ ok: true, data: project });
   } catch (error) {
     console.log(error);
     res.status(500).send({ ok: false, code: SERVER_ERROR, error });
