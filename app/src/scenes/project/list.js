@@ -2,7 +2,7 @@ import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useHistory } from "react-router-dom";
-
+import { fetchProjects, createProject } from "../../services/projectService";
 import Loader from "../../components/loader";
 import LoadingButton from "../../components/loadingButton";
 import ProgressBar from "../../components/ProgressBar";
@@ -14,11 +14,18 @@ const ProjectList = () => {
 
   const history = useHistory();
 
+  const loadProjects = async () => {
+    try {
+      const projectsData = await fetchProjects();
+      setProjects(projectsData);
+    } catch (error) {
+      console.error("Failed to load projects:", error);
+      toast.error("Failed to load projects.");
+    }
+  };
+
   useEffect(() => {
-    (async () => {
-      const { data: u } = await api.get("/project");
-      setProjects(u);
-    })();
+    loadProjects();
   }, []);
 
   useEffect(() => {
@@ -35,7 +42,7 @@ const ProjectList = () => {
 
   return (
     <div className="w-full p-2 md:!px-8">
-      <Create onChangeSearch={handleSearch} />
+      <Create onChangeSearch={handleSearch} loadProjects={loadProjects}  />
       <div className="py-3">
         {activeProjects.map((hit) => {
           return (
@@ -92,8 +99,22 @@ const Budget = ({ project }) => {
   return <ProgressBar percentage={width} max={budget_max_monthly} value={total} />;
 };
 
-const Create = ({ onChangeSearch }) => {
+const Create = ({ onChangeSearch, loadProjects }) => {
   const [open, setOpen] = useState(false);
+
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      values.status = "active";
+      await createProject(values);
+      toast.success("Project created successfully!");
+      loadProjects(); // Refresh the project list
+      setOpen(false);
+    } catch (error) {
+      console.error("Error creating project:", error);
+      toast.error("Error creating project.");
+    }
+    setSubmitting(false);
+  };
 
   return (
     <div className="mb-[10px] ">
@@ -139,19 +160,7 @@ const Create = ({ onChangeSearch }) => {
             {/* Modal Body */}
             <Formik
               initialValues={{}}
-              onSubmit={async (values, { setSubmitting }) => {
-                try {
-                  values.status = "active";
-                  const res = await api.post("/project", values);
-                  if (!res.ok) throw res;
-                  toast.success("Created!");
-                  setOpen(false);
-                } catch (e) {
-                  console.log(e);
-                  toast.error("Some Error!", e.code);
-                }
-                setSubmitting(false);
-              }}>
+              onSubmit={handleSubmit}>
               {({ values, handleChange, handleSubmit, isSubmitting }) => (
                 <React.Fragment>
                   <div className="w-full md:w-6/12 text-left">
