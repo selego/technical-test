@@ -4,6 +4,7 @@ const router = express.Router();
 
 const ActivityObject = require("../models/activity");
 const ProjectObject = require("../models/project");
+const getOverallCost = require("../repository/activity");
 
 const SERVER_ERROR = "SERVER_ERROR";
 
@@ -56,6 +57,16 @@ router.delete("/:id", passport.authenticate("user", { session: false }), async (
   try {
     await ActivityObject.findByIdAndDelete(req.params.id);
     res.status(200).send({ ok: true, data: null });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ ok: false, code: SERVER_ERROR, error });
+  }
+});
+
+router.get("/overall-cost", passport.authenticate("user", { session: false }), async (req, res) => {
+  try {
+    const overallCost = await getOverallCost(req.query.dateFrom, req.query.dateTo);
+    res.status(200).send({ ok: true, data: overallCost });
   } catch (error) {
     console.log(error);
     res.status(500).send({ ok: false, code: SERVER_ERROR, error });

@@ -8,6 +8,7 @@ import LoadingButton from "../../components/loadingButton";
 import ProgressBar from "../../components/ProgressBar";
 
 import api from "../../services/api";
+import OverAllProjectBudget from "../../components/overallProjectBudget";
 const ProjectList = () => {
   const [projects, setProjects] = useState(null);
   const [activeProjects, setActiveProjects] = useState(null);
@@ -37,6 +38,9 @@ const ProjectList = () => {
     <div className="w-full p-2 md:!px-8">
       <Create onChangeSearch={handleSearch} />
       <div className="py-3">
+        <div className="flex">
+          <OverAllProjectBudget></OverAllProjectBudget>
+        </div>
         {activeProjects.map((hit) => {
           return (
             <div

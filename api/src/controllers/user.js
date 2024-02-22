@@ -6,6 +6,7 @@ const UserObject = require("../models/user");
 const AuthObject = require("../auth");
 
 const { validatePassword } = require("../utils");
+const { mapUserDtoToModel } = require("../mapper/user");
 
 const UserAuth = new AuthObject(UserObject);
 
@@ -44,7 +45,8 @@ router.post("/", passport.authenticate("user", { session: false }), async (req, 
   try {
     if (!validatePassword(req.body.password)) return res.status(400).send({ ok: false, user: null, code: PASSWORD_NOT_VALIDATED });
 
-    const user = await UserObject.create({ ...req.body, organisation: req.user.organisation });
+    const userModel = mapUserDtoToModel(req.body)
+    const user = await UserObject.create({ ...userModel, organisation: req.user.organisation });
 
     return res.status(200).send({ data: user, ok: true });
   } catch (error) {
