@@ -12,6 +12,7 @@ import api from "../../services/api";
 
 import ProgressBar from "../../components/ProgressBar";
 import SelectMonth from "./../../components/selectMonth";
+import DayHeader from "../../components/dayHeader";
 
 ChartJS.register(...registerables);
 
@@ -166,22 +167,11 @@ const Activities = ({ project }) => {
                 <thead>
                   <tr>
                     <th className="py-[10px] text-[14px] font-bold text-[#212325] text-left pl-[10px]">Users</th>
-                    {days.map((e) => {
-                      const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-                      const _date = new Date(e);
-                      const day = _date.getDay();
-                      const weekday = days[day];
-                      const date = _date.getDate();
+                    {days.map((day) => {
                       return (
-                        <th
-                          className={`w-[20px] border border-[#E5EAEF] text-[12px] font-semibold text-center ${day == 0 || day == 6 ? "bg-[#FFD5F1]" : "bg-[white]"}`}
-                          key={e}
-                          day={day}>
-                          <div>{weekday}</div>
-                          <div>{date}</div>
-                        </th>
-                      );
-                    })}
+                          <DayHeader day={day}></DayHeader>
+                      )})
+                    }
                   </tr>
                 </thead>
                 <tbody>
@@ -191,35 +181,35 @@ const Activities = ({ project }) => {
                         <div>{`Total ${getTotal()} days`}</div>
                       </div>
                     </th>
-                    {days.map((e, i) => {
+                    {days.map((day, dayIndex) => {
                       const v = activities.reduce((acc, a) => {
-                        if (!a.detail[i]) return acc;
-                        return acc + a.detail[i].value;
+                        if (!a.detail[dayIndex]) return acc;
+                        return acc + a.detail[dayIndex].value;
                       }, 0);
-                      return <Field key={i} value={v} disabled />;
+                      return <Field key={dayIndex} value={v} disabled />;
                     })}
                   </tr>
                   {activities
-                    .sort((a, b) => b.total - a.total)
-                    .map((e) => {
+                    .sort((activity, nextActivity) => nextActivity.total - activity.total)
+                    .map((activity) => {
                       return (
-                        <React.Fragment key={`${e.user}`}>
-                          <tr className="border-t border-b border-r border-[#E5EAEF]" key={`1-${e._id}`}>
+                        <React.Fragment key={`${activity.user}`}>
+                          <tr className="border-t border-b border-r border-[#E5EAEF]" key={`1-${activity._id}`}>
                             <th className="w-[100px] border-t border-b border-r text-[12px] font-bold text-[#212325] text-left">
                               <div className="flex flex-1 items-center justify-between gap-1 px-2">
                                 <div className="flex flex-1 items-center justify-start gap-1">
                                   <img
                                     className="relative z-30 inline object-cover w-[25px] h-[25px] border border-white rounded-full"
-                                    src={e?.userAvatar}
-                                    alt={`avatar ${e?.user}`}
+                                    src={activity?.userAvatar}
+                                    alt={`avatar ${activity?.user}`}
                                   />
-                                  <div>{e.user}</div>
+                                  <div>{activity.user}</div>
                                 </div>
-                                <div className="text-md italic font-normal">{(e.total / 8).toFixed(2)} days</div>
+                                <div className="text-md italic font-normal">{(activity.total / 8).toFixed(2)} days</div>
                               </div>
                             </th>
-                            {e.detail.map((f, j) => {
-                              return <Field key={`${e.user} ${j}`} value={f.value || 0} />;
+                            {activity.detail.map((detail, detailIndex) => {
+                              return <Field key={`${activity.user} ${detailIndex}`} value={detail.value || 0} />;
                             })}
                           </tr>
                         </React.Fragment>
